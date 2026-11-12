@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using System.Linq;
 using Newtonsoft.Json.Linq;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>The car's place while the field is sorted: place in class and the car to follow.</summary>
     public sealed class SortingTarget

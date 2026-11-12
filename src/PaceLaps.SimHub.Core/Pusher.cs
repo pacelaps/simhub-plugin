@@ -2,7 +2,7 @@ using System;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>A frame of the Pusher protocol (version 7), which Reverb speaks.</summary>
     public sealed class PusherFrame

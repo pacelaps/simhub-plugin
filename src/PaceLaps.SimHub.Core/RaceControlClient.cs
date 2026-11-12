@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>
     /// The driver's connection to race control, as the web views do it (synchronized display protocol): measure the

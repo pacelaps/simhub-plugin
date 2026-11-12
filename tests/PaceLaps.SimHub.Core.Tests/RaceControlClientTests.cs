@@ -1,7 +1,7 @@
 using Newtonsoft.Json.Linq;
-using PaceLaps.SimHub.Core;
+using PaceLaps.Plugin.Core;
 
-namespace PaceLaps.SimHub.Core.Tests;
+namespace PaceLaps.Plugin.Core.Tests;
 
 /// <summary>The synchronized display protocol end to end, with a fake server, socket and clock.</summary>
 public sealed class RaceControlClientTests : IDisposable

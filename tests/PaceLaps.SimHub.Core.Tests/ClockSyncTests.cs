@@ -1,6 +1,6 @@
-using PaceLaps.SimHub.Core;
+using PaceLaps.Plugin.Core;
 
-namespace PaceLaps.SimHub.Core.Tests;
+namespace PaceLaps.Plugin.Core.Tests;
 
 /// <summary>The same cases as the web views' clock tests: both must agree on the server's time.</summary>
 public sealed class ClockSyncTests

@@ -1,8 +1,8 @@
 using System.Net;
 using Newtonsoft.Json.Linq;
-using PaceLaps.SimHub.Core;
+using PaceLaps.Plugin.Core;
 
-namespace PaceLaps.SimHub.Core.Tests;
+namespace PaceLaps.Plugin.Core.Tests;
 
 /// <summary>
 /// The device clock and its timers, moved by hand. Timers and delays fire in time order on <see cref="Advance"/>,

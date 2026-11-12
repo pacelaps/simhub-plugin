@@ -3,7 +3,7 @@
        netstandard2.0 so SimHub's .NET Framework 4.8 loads it. -->
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
-    <RootNamespace>PaceLaps.SimHub.Core</RootNamespace>
+    <RootNamespace>PaceLaps.Plugin.Core</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" />

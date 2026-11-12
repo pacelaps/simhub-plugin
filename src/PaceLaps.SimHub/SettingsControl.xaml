@@ -1,0 +1,51 @@
+<UserControl x:Class="PaceLaps.Plugin.SettingsControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:styles="clr-namespace:SimHub.Plugins.Styles;assembly=SimHub.Plugins">
+    <ScrollViewer>
+        <StackPanel>
+            <styles:SHSection Title="RACE CONTROL" ShowSeparator="True">
+                <StackPanel>
+                    <TextBlock x:Name="StatusText" FontSize="16" FontWeight="Bold" Margin="0,0,0,4" TextWrapping="Wrap" />
+                    <TextBlock x:Name="DetailText" Opacity="0.8" TextWrapping="Wrap" Margin="0,0,0,12" />
+
+                    <Label Content="Overlay URL" Padding="0,0,0,2" />
+                    <TextBlock Opacity="0.8" TextWrapping="Wrap" Margin="0,0,0,6"
+                               Text="Join your league on the driver page, copy one of your overlay URLs and paste it here." />
+                    <PasswordBox x:Name="UrlBox" Width="460" HorizontalAlignment="Left" Margin="0,0,0,6" />
+                    <TextBlock x:Name="UrlProblem" Foreground="#F87171" TextWrapping="Wrap" Visibility="Collapsed" Margin="0,0,0,6" />
+                    <StackPanel Orientation="Horizontal">
+                        <styles:SHButtonPrimary Click="Connect_Click">Connect</styles:SHButtonPrimary>
+                        <styles:SHButtonSecondary Loaded="DisconnectButton_Loaded" Click="Disconnect_Click">Disconnect</styles:SHButtonSecondary>
+                    </StackPanel>
+                </StackPanel>
+            </styles:SHSection>
+
+            <styles:SHSection Title="SOUND" ShowSeparator="True">
+                <StackPanel>
+                    <styles:SHToggleCheckbox Loaded="SoundBox_Loaded" Checked="Sound_Changed" Unchecked="Sound_Changed">A tone for each call</styles:SHToggleCheckbox>
+                    <Label Content="Volume" Padding="0,8,0,2" />
+                    <Slider x:Name="VolumeSlider" Minimum="0" Maximum="100" Width="300" HorizontalAlignment="Left"
+                            IsSnapToTickEnabled="True" TickFrequency="5" ValueChanged="Volume_Changed" />
+                    <styles:SHButtonSecondary HorizontalAlignment="Left" Click="TestSound_Click">Test sound</styles:SHButtonSecondary>
+                </StackPanel>
+            </styles:SHSection>
+
+            <styles:SHSection Title="DESIGN YOUR OVERLAY" ShowSeparator="True">
+                <StackPanel>
+                    <TextBlock Opacity="0.8" TextWrapping="Wrap" Margin="0,0,0,6"
+                               Text="Shows a test call for 8 seconds on this PC only, so you can set up overlays, dashboards and LEDs without a race. The properties are under PaceLapsPlugin." />
+                    <WrapPanel>
+                        <styles:SHButtonSecondary Tag="safety_car" Click="Preview_Click">Safety car</styles:SHButtonSecondary>
+                        <styles:SHButtonSecondary Tag="penalty" Click="Preview_Click">My penalty</styles:SHButtonSecondary>
+                        <styles:SHButtonSecondary Tag="wave_around" Click="Preview_Click">Wave around</styles:SHButtonSecondary>
+                        <styles:SHButtonSecondary Tag="flag" Click="Preview_Click">Green flag</styles:SHButtonSecondary>
+                        <styles:SHButtonSecondary Tag="info" Click="Preview_Click">Info</styles:SHButtonSecondary>
+                    </WrapPanel>
+                </StackPanel>
+            </styles:SHSection>
+
+            <TextBlock x:Name="VersionText" Opacity="0.6" Margin="0,8,0,0" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

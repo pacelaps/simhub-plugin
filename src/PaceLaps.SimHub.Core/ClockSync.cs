@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>One ping's result: server clock minus device clock, and the network round trip.</summary>
     public readonly struct ClockSample

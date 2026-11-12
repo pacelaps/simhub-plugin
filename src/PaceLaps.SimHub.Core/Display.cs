@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>A call on display: the message, when it was shown (server ms) and, for one-offs, until when.</summary>
     public sealed class ShownCall

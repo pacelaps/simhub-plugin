@@ -1,7 +1,7 @@
 using System;
 using System.Text.RegularExpressions;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>
     /// One of the driver's overlay URLs from the driver page (https://app.pacelaps.com/overlay/&lt;token&gt;): the site

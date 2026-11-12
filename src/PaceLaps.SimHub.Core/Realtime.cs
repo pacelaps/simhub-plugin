@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>The realtime connection (Reverb): connects, reconnects, and passes on channel events.</summary>
     public interface IRealtime

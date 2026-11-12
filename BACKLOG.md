@@ -9,7 +9,10 @@ Exit: one beta driver uses it in a league race, and the VR question is answered.
 - [x] Core: realtime connection (Reverb, Pusher protocol), reconnect and resync from the cursor, clock offset,
       `showAt` scheduling, shown reports, a heartbeat ping a minute; unit tests with a fake clock, server and socket
       (2026-11-12)
-- [ ] SimHub adapter (net48): properties, events, settings page (paste an overlay URL), tones
+- [x] SimHub adapter (net48): properties, events, settings page (paste an overlay URL, kept encrypted for the Windows
+      user), tones through SimHub's NAudio, test calls for designing (2026-11-12; `docs/properties.md`). Not yet
+      checked in SimHub itself.
+- [ ] Texts of the settings page in a `.resx` (SimHub's translation editor), once they settle
 - [ ] Against the development server, without iRacing: properties in SimHub's list, lateness against a browser
 - [ ] Dash Studio overlay and a PaceLaps layer for existing dashboards
 - [ ] LED effects profile, tested on a real wheel
@@ -25,6 +28,10 @@ Exit: one beta driver uses it in a league race, and the VR question is answered.
 - [ ] Keep a compatibility list of the SimHub versions the plugin was tested on (README).
 
 ## Findings and decisions
+- 2026-11-12: code namespaces are `PaceLaps.Plugin` and `PaceLaps.Plugin.Core` (the DLLs keep their names): inside a
+  `PaceLaps.SimHub` namespace, the XAML compiler's references to SimHub's own types (`SimHub.Plugins.Styles`) resolve
+  to ours and fail.
+- 2026-11-12: property names say Color, as SimHub does.
 - 2026-11-12: sign-in by pasting one of the driver's overlay URLs (not a join link or QR code): the device API
   already accepts the overlay token for everything a device does, so the server needs no change. New overlay URLs or
   Turn off on the driver page disconnect the plugin.

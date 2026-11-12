@@ -1,6 +1,6 @@
 using System.Linq;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     public enum ConnectionStatus
     {
@@ -62,5 +62,55 @@ namespace PaceLaps.SimHub.Core
         public RaceCar? MyCar => Race?.Car(Device.Car);
 
         internal DriverState Copy() => (DriverState)MemberwiseClone();
+
+        /// <summary>The kinds of test call the plugin can show for designing overlays and LEDs.</summary>
+        public static readonly string[] PreviewKinds = { "safety_car", "penalty", "wave_around", "flag", "info" };
+
+        /// <summary>
+        /// A connected state showing one test call of <paramref name="kind"/> since <paramref name="serverNowMs"/>, for
+        /// designing overlays and LEDs without a session. Never sent anywhere, never reported as shown.
+        /// </summary>
+        public static DriverState Preview(string kind, string? car, long serverNowMs)
+        {
+            var mine = car ?? "0";
+            var (text, sticky, about) = kind switch
+            {
+                "safety_car" => ("SAFETY CAR: TEST", true, (string?)null),
+                "penalty" => ($"DRIVE-THROUGH #{mine}: TEST", true, mine),
+                "wave_around" => ("WAVE AROUND: TEST", false, null),
+                "flag" => ("GREEN FLAG: TEST", false, null),
+                _ => ("TEST CALL FROM PACELAPS", false, null),
+            };
+            var o = new Newtonsoft.Json.Linq.JObject
+            {
+                ["v"] = 1,
+                ["id"] = "test_" + kind,
+                ["cursor"] = "c_0_0",
+                ["type"] = PreviewKinds.Contains(kind) ? kind : "info",
+                ["text"] = text,
+                ["affects"] = about == null
+                    ? new Newtonsoft.Json.Linq.JObject { ["scope"] = "all" }
+                    : new Newtonsoft.Json.Linq.JObject { ["scope"] = "car", ["cars"] = new Newtonsoft.Json.Linq.JArray(about) },
+                ["visibleTo"] = new Newtonsoft.Json.Linq.JObject { ["scope"] = "all" },
+                ["showAt"] = Iso.FromMs(serverNowMs),
+                ["sticky"] = sticky,
+                ["sound"] = kind == "wave_around" ? "wave" : kind,
+            };
+            if (kind == "penalty")
+            {
+                o["detail"] = "A test: nothing to serve.";
+            }
+
+            var message = RaceMessage.From(o)!;
+            return new DriverState
+            {
+                Status = ConnectionStatus.Connected,
+                Device = new DeviceInfo(null, mine, null, false),
+                Display = CallDisplay.Empty.Show(message, serverNowMs, 8),
+            };
+        }
+
+        /// <summary>The preview's call, for its tone and events.</summary>
+        public RaceMessage? PreviewCall => Display.Current?.Message;
     }
 }

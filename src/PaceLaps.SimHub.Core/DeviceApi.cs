@@ -8,7 +8,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Newtonsoft.Json.Linq;
 
-namespace PaceLaps.SimHub.Core
+namespace PaceLaps.Plugin.Core
 {
     /// <summary>A device API request that failed; <see cref="SignedOut"/> when the token no longer works.</summary>
     public sealed class DeviceApiException : Exception

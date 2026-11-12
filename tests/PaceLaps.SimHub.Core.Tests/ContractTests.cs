@@ -1,8 +1,8 @@
 using System.Text.Json;
 using Json.Schema;
-using PaceLaps.SimHub.Core;
+using PaceLaps.Plugin.Core;
 
-namespace PaceLaps.SimHub.Core.Tests;
+namespace PaceLaps.Plugin.Core.Tests;
 
 /// <summary>The plugin reads the shared examples and sends what the shared schemas accept.</summary>
 public sealed class ContractTests

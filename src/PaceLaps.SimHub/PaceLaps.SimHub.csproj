@@ -1,0 +1,39 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- The SimHub plugin: a thin adapter over PaceLaps.SimHub.Core (properties, events, settings page, tones).
+       SimHub loads .NET Framework 4.8 plugins and provides the referenced DLLs itself, so none are copied. -->
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <UseWPF>true</UseWPF>
+    <RootNamespace>PaceLaps.Plugin</RootNamespace>
+    <AssemblyName>PaceLaps.SimHub</AssemblyName>
+    <!-- SimHub's folder: SIMHUB_INSTALL_PATH (set by SimHub's installer), else the default install. -->
+    <SimHubPath Condition="'$(SimHubPath)' == ''">$(SIMHUB_INSTALL_PATH)</SimHubPath>
+    <SimHubPath Condition="'$(SimHubPath)' == ''">C:\Program Files (x86)\SimHub\</SimHubPath>
+    <SimHubPath Condition="!HasTrailingSlash('$(SimHubPath)')">$(SimHubPath)\</SimHubPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Reference Include="SimHub.Plugins" HintPath="$(SimHubPath)SimHub.Plugins.dll" Private="false" />
+    <Reference Include="SimHub.Logging" HintPath="$(SimHubPath)SimHub.Logging.dll" Private="false" />
+    <Reference Include="GameReaderCommon" HintPath="$(SimHubPath)GameReaderCommon.dll" Private="false" />
+    <Reference Include="log4net" HintPath="$(SimHubPath)log4net.dll" Private="false" />
+    <Reference Include="NAudio.Core" HintPath="$(SimHubPath)NAudio.Core.dll" Private="false" />
+    <Reference Include="NAudio.WinMM" HintPath="$(SimHubPath)NAudio.WinMM.dll" Private="false" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Security" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\PaceLaps.SimHub.Core\PaceLaps.SimHub.Core.csproj" />
+  </ItemGroup>
+
+  <!-- dotnet build -p:DeployToSimHub=true copies the plugin into SimHub's folder (SimHub must be closed: it locks the
+       DLLs). Only our two DLLs: SimHub has Newtonsoft.Json and NAudio already. -->
+  <Target Name="DeployToSimHub" AfterTargets="Build" Condition="'$(DeployToSimHub)' == 'true'">
+    <ItemGroup>
+      <PluginFiles Include="$(TargetDir)PaceLaps.SimHub.dll;$(TargetDir)PaceLaps.SimHub.pdb;$(TargetDir)PaceLaps.SimHub.Core.dll;$(TargetDir)PaceLaps.SimHub.Core.pdb" />
+    </ItemGroup>
+    <Copy SourceFiles="@(PluginFiles)" DestinationFolder="$(SimHubPath)" />
+    <Message Importance="high" Text="PaceLaps plugin copied to $(SimHubPath)" />
+  </Target>
+</Project>
