@@ -73,6 +73,51 @@ public sealed class PluginViewTests
     }
 
     [Fact]
+    public void The_state_is_the_banner_and_a_one_off_is_the_notice_beside_it()
+    {
+        var display = CallDisplay.Empty
+            .Show(M("sc", "safety_car", true), T, 8)
+            .Show(RaceMessage.From(Snapshots.Message("wa", 2, T + 2_000, "wave_around", false, text: "WAVE AROUND: GT4"))!, T + 2_000, 8);
+
+        var v = PluginView.From(State(display: display), T + 3_000);
+
+        Assert.True(v.BannerActive);
+        Assert.Equal("SC", v.BannerText);
+        Assert.Equal(Palette.Yellow, v.BannerColour);
+        Assert.Equal(3, v.BannerAgeSeconds);
+        Assert.True(v.NoticeActive);
+        Assert.Equal("WAVE AROUND: GT4", v.NoticeText);
+        Assert.Equal(Palette.Blue, v.NoticeColour);
+        Assert.Equal("#FFFFFF", v.NoticeTextColour);
+        Assert.Equal(1, v.NoticeAgeSeconds);
+
+        var later = PluginView.From(State(display: display.Expire(T + 10_000)), T + 10_000);
+        Assert.True(later.BannerActive);
+        Assert.False(later.NoticeActive);
+        Assert.Equal("", later.NoticeText);
+    }
+
+    [Fact]
+    public void A_class_wave_around_says_it_is_for_this_cars_class()
+    {
+        var o = Snapshots.Message("wa", 2, T, "wave_around", false);
+        o["affects"] = new Newtonsoft.Json.Linq.JObject { ["scope"] = "class", ["classes"] = new Newtonsoft.Json.Linq.JArray(4098) };
+
+        var v = PluginView.From(State(display: CallDisplay.Empty.Show(RaceMessage.From(o)!, T, 8)), T);
+
+        Assert.True(v.NoticeMyClass);
+    }
+
+    [Fact]
+    public void Every_property_has_a_unique_name_and_a_value()
+    {
+        var names = PluginView.Properties.Select(p => p.Name).ToList();
+
+        Assert.Equal(names.Count, names.Distinct().Count());
+        Assert.All(PluginView.Properties, p => Assert.NotNull(p.Value(PluginView.NotSetUp)));
+    }
+
+    [Fact]
     public void A_flag_call_takes_the_races_flag_colour()
     {
         var display = CallDisplay.Empty.Show(M("green", "flag", false), T, 8);

@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PaceLaps.Plugin.Core
 {
@@ -72,6 +73,32 @@ namespace PaceLaps.Plugin.Core
         public bool CallMine { get; private set; }
 
         public string CallId { get; private set; } = "";
+
+        /// <summary>The lasting state on screen (a safety car, Code 60, this car's penalty): the main banner.</summary>
+        public bool BannerActive { get; private set; }
+
+        public string BannerText { get; private set; } = "";
+        public string BannerDetail { get; private set; } = "";
+        public string BannerKind { get; private set; } = "";
+        public string BannerColour { get; private set; } = "";
+        public string BannerTextColour { get; private set; } = "";
+        public bool BannerMine { get; private set; }
+        public double BannerAgeSeconds { get; private set; }
+
+        /// <summary>The newest one-off call while it lasts (a wave around, a flag call, an info).</summary>
+        public bool NoticeActive { get; private set; }
+
+        public string NoticeText { get; private set; } = "";
+        public string NoticeDetail { get; private set; } = "";
+        public string NoticeKind { get; private set; } = "";
+        public string NoticeColour { get; private set; } = "";
+        public string NoticeTextColour { get; private set; } = "";
+        public bool NoticeMine { get; private set; }
+
+        /// <summary>The notice concerns this car's class (a class wave around).</summary>
+        public bool NoticeMyClass { get; private set; }
+
+        public double NoticeAgeSeconds { get; private set; }
 
         public string FlagState { get; private set; } = "";
         public string FlagLabel { get; private set; } = "";
@@ -162,6 +189,35 @@ namespace PaceLaps.Plugin.Core
                 v.CallId = m.Id;
             }
 
+            var banner = s.Display.Banners.FirstOrDefault();
+            if (banner != null)
+            {
+                var m = banner.Message;
+                v.BannerActive = true;
+                v.BannerText = m.Text;
+                v.BannerDetail = m.Detail ?? "";
+                v.BannerKind = m.Type;
+                v.BannerColour = ColourOf(m, race);
+                v.BannerTextColour = Palette.TextOn(v.BannerColour);
+                v.BannerMine = m.IsAbout(s.Device.Car);
+                v.BannerAgeSeconds = Math.Max(0, (serverNowMs - banner.ShownAtMs) / 1000.0);
+            }
+
+            var notice = s.Display.OneOffs.FirstOrDefault();
+            if (notice != null)
+            {
+                var m = notice.Message;
+                v.NoticeActive = true;
+                v.NoticeText = m.Text;
+                v.NoticeDetail = m.Detail ?? "";
+                v.NoticeKind = m.Type;
+                v.NoticeColour = ColourOf(m, race);
+                v.NoticeTextColour = Palette.TextOn(v.NoticeColour);
+                v.NoticeMine = m.IsAbout(s.Device.Car);
+                v.NoticeMyClass = m.Affects.Scope == "class" && s.Device.ClassId != null && m.Affects.Classes.Contains(s.Device.ClassId.Value);
+                v.NoticeAgeSeconds = Math.Max(0, (serverNowMs - notice.ShownAtMs) / 1000.0);
+            }
+
             if (s.Target != null)
             {
                 v.SortingActive = true;
@@ -208,6 +264,80 @@ namespace PaceLaps.Plugin.Core
             "wave_around" => Palette.Blue,
             "flag" => race == null ? Palette.White : Palette.ForFlag(race.FlagState),
             _ => Palette.Grey,
+        };
+
+        /// <summary>
+        /// Every SimHub property, by name (SimHub shows them as PaceLapsPlugin.&lt;name&gt;). The plugin binds exactly these;
+        /// the overlays' formulas may use only these (a test checks).
+        /// </summary>
+        public static readonly IReadOnlyList<(string Name, Func<PluginView, object> Value)> Properties = new (string, Func<PluginView, object>)[]
+        {
+            ("Status", v => v.Status),
+            ("Connected", v => v.Connected),
+            ("Offline", v => v.Offline),
+            ("Problem", v => v.Problem),
+            ("Car", v => v.Car),
+            ("Session", v => v.Session),
+
+            ("Call.Active", v => v.CallActive),
+            ("Call.Text", v => v.CallText),
+            ("Call.Detail", v => v.CallDetail),
+            ("Call.Kind", v => v.CallKind),
+            ("Call.Color", v => v.CallColour),
+            ("Call.TextColor", v => v.CallTextColour),
+            ("Call.AgeSeconds", v => v.CallAgeSeconds),
+            ("Call.New", v => v.CallNew),
+            ("Call.Sticky", v => v.CallSticky),
+            ("Call.Mine", v => v.CallMine),
+
+            ("Banner.Active", v => v.BannerActive),
+            ("Banner.Text", v => v.BannerText),
+            ("Banner.Detail", v => v.BannerDetail),
+            ("Banner.Kind", v => v.BannerKind),
+            ("Banner.Color", v => v.BannerColour),
+            ("Banner.TextColor", v => v.BannerTextColour),
+            ("Banner.Mine", v => v.BannerMine),
+            ("Banner.AgeSeconds", v => v.BannerAgeSeconds),
+
+            ("Notice.Active", v => v.NoticeActive),
+            ("Notice.Text", v => v.NoticeText),
+            ("Notice.Detail", v => v.NoticeDetail),
+            ("Notice.Kind", v => v.NoticeKind),
+            ("Notice.Color", v => v.NoticeColour),
+            ("Notice.TextColor", v => v.NoticeTextColour),
+            ("Notice.Mine", v => v.NoticeMine),
+            ("Notice.MyClass", v => v.NoticeMyClass),
+            ("Notice.AgeSeconds", v => v.NoticeAgeSeconds),
+
+            ("Flag.State", v => v.FlagState),
+            ("Flag.Label", v => v.FlagLabel),
+            ("Flag.Color", v => v.FlagColour),
+
+            ("Procedure.Name", v => v.Procedure),
+            ("Procedure.Phase", v => v.Phase),
+            ("Procedure.Running", v => v.ProcedureRunning),
+
+            ("Sorting.Active", v => v.SortingActive),
+            ("Sorting.Position", v => v.SortingPosition),
+            ("Sorting.Follow", v => v.SortingFollow),
+
+            ("Penalty.Active", v => v.PenaltyActive),
+            ("Penalty.Text", v => v.PenaltyText),
+            ("Penalty.Detail", v => v.PenaltyDetail),
+            ("Personal.Text", v => v.PersonalText),
+
+            ("Race.Position", v => v.Position),
+            ("Race.ClassPosition", v => v.ClassPosition),
+            ("Race.OnPitRoad", v => v.OnPitRoad),
+            ("Race.Lap", v => v.Lap),
+            ("Race.Laps", v => v.Laps),
+            ("Race.TimeLeftSeconds", v => v.TimeLeftSeconds),
+
+            ("Led.Color", v => v.LedColour),
+            ("Led.Flash", v => v.LedFlash),
+
+            ("Clock.OffsetMs", v => v.ClockOffsetMs),
+            ("Clock.RttMs", v => v.ClockRttMs),
         };
 
         public static string StatusName(ConnectionStatus status) => status switch

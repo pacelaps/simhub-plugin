@@ -34,6 +34,23 @@ A one-off call (a blue flag, an info) shows over a lasting state (a safety car, 
 | `Call.Sticky` | yes/no | A lasting state rather than a one-off |
 | `Call.Mine` | yes/no | It names your car |
 
+## The state and the notice
+
+For layouts with two lines: the lasting state on top, the one-off beside or below it.
+
+| Property | Type | Meaning |
+| --- | --- | --- |
+| `Banner.Active` | yes/no | A lasting state is up (a safety car, Code 60, your penalty) |
+| `Banner.Text`, `Banner.Detail` | text | Its text and second line |
+| `Banner.Kind`, `Banner.Color`, `Banner.TextColor` | text | As for `Call.*` |
+| `Banner.Mine` | yes/no | It names your car |
+| `Banner.AgeSeconds` | number | Seconds since it came up |
+| `Notice.Active` | yes/no | A one-off call is showing (for its 8 seconds) |
+| `Notice.Text`, `Notice.Detail`, `Notice.Kind`, `Notice.Color`, `Notice.TextColor` | text | As above |
+| `Notice.Mine` | yes/no | It names your car |
+| `Notice.MyClass` | yes/no | It concerns your class (a class wave around) |
+| `Notice.AgeSeconds` | number | Seconds since it was shown |
+
 ## Race
 
 | Property | Type | Meaning |

@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Builds the Dash Studio overlays (overlay/dist/*.simhubdash) from the designs in Designs.cs,
+       with "dotnet run" on this project (README). -->
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <RootNamespace>PaceLaps.Overlays</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\PaceLaps.SimHub.Core\PaceLaps.SimHub.Core.csproj" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="PaceLaps.SimHub.Core.Tests" />
+  </ItemGroup>
+</Project>

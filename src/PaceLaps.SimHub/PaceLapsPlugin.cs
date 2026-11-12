@@ -143,57 +143,13 @@ namespace PaceLaps.Plugin
             PlayTone(message.Sound, message.Type);
         }
 
+        /// <summary>Every property of the core's list (PluginView.Properties), read from the current view.</summary>
         private void AttachProperties()
         {
-            Attach("Status", v => v.Status);
-            Attach("Connected", v => v.Connected);
-            Attach("Offline", v => v.Offline);
-            Attach("Problem", v => v.Problem);
-            Attach("Car", v => v.Car);
-            Attach("Session", v => v.Session);
-
-            Attach("Call.Active", v => v.CallActive);
-            Attach("Call.Text", v => v.CallText);
-            Attach("Call.Detail", v => v.CallDetail);
-            Attach("Call.Kind", v => v.CallKind);
-            Attach("Call.Color", v => v.CallColour);
-            Attach("Call.TextColor", v => v.CallTextColour);
-            Attach("Call.AgeSeconds", v => v.CallAgeSeconds);
-            Attach("Call.New", v => v.CallNew);
-            Attach("Call.Sticky", v => v.CallSticky);
-            Attach("Call.Mine", v => v.CallMine);
-
-            Attach("Flag.State", v => v.FlagState);
-            Attach("Flag.Label", v => v.FlagLabel);
-            Attach("Flag.Color", v => v.FlagColour);
-
-            Attach("Procedure.Name", v => v.Procedure);
-            Attach("Procedure.Phase", v => v.Phase);
-            Attach("Procedure.Running", v => v.ProcedureRunning);
-
-            Attach("Sorting.Active", v => v.SortingActive);
-            Attach("Sorting.Position", v => v.SortingPosition);
-            Attach("Sorting.Follow", v => v.SortingFollow);
-
-            Attach("Penalty.Active", v => v.PenaltyActive);
-            Attach("Penalty.Text", v => v.PenaltyText);
-            Attach("Penalty.Detail", v => v.PenaltyDetail);
-            Attach("Personal.Text", v => v.PersonalText);
-
-            Attach("Race.Position", v => v.Position);
-            Attach("Race.ClassPosition", v => v.ClassPosition);
-            Attach("Race.OnPitRoad", v => v.OnPitRoad);
-            Attach("Race.Lap", v => v.Lap);
-            Attach("Race.Laps", v => v.Laps);
-            Attach("Race.TimeLeftSeconds", v => v.TimeLeftSeconds);
-
-            Attach("Led.Color", v => v.LedColour);
-            Attach("Led.Flash", v => v.LedFlash);
-
-            Attach("Clock.OffsetMs", v => v.ClockOffsetMs);
-            Attach("Clock.RttMs", v => v.ClockRttMs);
+            foreach (var (name, value) in PluginView.Properties)
+            {
+                this.AttachDelegate(name, () => value(View()));
+            }
         }
-
-        private void Attach<T>(string name, Func<PluginView, T> value) => this.AttachDelegate(name, () => value(View()));
     }
 }

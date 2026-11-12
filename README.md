@@ -39,6 +39,23 @@ dotnet build src/PaceLaps.SimHub -p:DeployToSimHub=true
 Then start SimHub, enable the PaceLaps plugin when SimHub asks, and open **PaceLaps** in the left menu. The plugin is
 two files: `PaceLaps.SimHub.dll` and `PaceLaps.SimHub.Core.dll` (SimHub already has Newtonsoft.Json and NAudio).
 
+### Overlays
+
+Three Dash Studio overlays in PaceLaps' look, all reading the same properties; drivers pick one:
+
+- **PaceLaps Card** (the default): the call on dark glass with a colour bar and a small race control header.
+- **PaceLaps Solid**: the call as a banner filled in its colour, like the driver page.
+- **PaceLaps Strip**: one slim line for the top of the screen.
+
+They are built from `tools/PaceLaps.Overlays` (the designs in `Designs.cs`) into `overlay/dist/*.simhubdash`:
+
+```
+dotnet run --project tools/PaceLaps.Overlays
+```
+
+Import a `.simhubdash` in SimHub's Dash Studio. They bundle Inter (`overlay/fonts`, SIL Open Font License). The
+build refuses a formula that reads a property the plugin doesn't have.
+
 The message formats are in `contracts/`, a copy of the web service's. `scripts/sync-contracts.ps1` refreshes it from a
 web service checkout next to this one; a test fails while the copy is out of date.
 
@@ -51,7 +68,9 @@ SimHub 9.13.3 (2026-11-12).
 ```
 src/PaceLaps.SimHub.Core/          connection, clock offset, show-at timing, state (no SimHub reference)
 src/PaceLaps.SimHub/               the SimHub plugin: properties, events, tones, settings page
-tests/PaceLaps.SimHub.Core.Tests/  unit tests with a fake clock, server and socket
+tests/PaceLaps.SimHub.Core.Tests/  unit tests with a fake clock, server and socket, and the overlays' checks
+tools/PaceLaps.Overlays/           builds the three Dash Studio overlays
+overlay/fonts/                     Inter, bundled with the overlays
 contracts/                         the shared message schemas and examples (copied)
 docs/simhub-notes.md               what we found out about SimHub
 ```

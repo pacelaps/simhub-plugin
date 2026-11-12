@@ -14,3 +14,6 @@ lib/SimHub/
 .idea/
 .vscode/*
 !.vscode/settings.json
+
+# Built overlays (dotnet run --project tools/PaceLaps.Overlays)
+overlay/dist/

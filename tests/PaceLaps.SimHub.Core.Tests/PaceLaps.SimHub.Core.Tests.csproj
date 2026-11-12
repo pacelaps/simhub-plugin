@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\src\PaceLaps.SimHub.Core\PaceLaps.SimHub.Core.csproj" />
+    <ProjectReference Include="..\..\tools\PaceLaps.Overlays\PaceLaps.Overlays.csproj" />
   </ItemGroup>
 
   <ItemGroup>
