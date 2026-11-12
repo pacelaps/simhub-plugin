@@ -19,3 +19,13 @@ Findings from the proof of concept: SDK setup, VR result, sound, tablet dashboar
   none of its own, so nothing clashes.
 - Dependencies of the plugin's own must not clash with SimHub's and must be added to the post-build copy.
 - SimHub's free version refreshes dashboards at about 10 fps (a licence raises it); enough for calls.
+
+## 2026-11-12: first run in SimHub 9.13.3
+
+- SimHub found the plugin in its folder, asked to enable it, and lists its page as **PaceLaps** in the left menu.
+- Calls from the development server reached the properties and played their tones; SimHub's log
+  (`Logs\SimHub.txt`) shows the plugin's lines with the prefix `PaceLaps:`.
+- **Sound works through SimHub's NAudio** (default output device): the open point "reliable sound" is answered for
+  the PoC; a check during a race with the sim's own sound running is still due.
+- Display lateness in SimHub: 11 to 14 ms after showAt (Windows timer resolution, about 15 ms), well inside the
+  100 ms target.

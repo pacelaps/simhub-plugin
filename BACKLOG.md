@@ -10,10 +10,11 @@ Exit: one beta driver uses it in a league race, and the VR question is answered.
       `showAt` scheduling, shown reports, a heartbeat ping a minute; unit tests with a fake clock, server and socket
       (2026-11-12)
 - [x] SimHub adapter (net48): properties, events, settings page (paste an overlay URL, kept encrypted for the Windows
-      user), tones through SimHub's NAudio, test calls for designing (2026-11-12; `docs/properties.md`). Not yet
-      checked in SimHub itself.
+      user), tones through SimHub's NAudio, test calls for designing (2026-11-12; `docs/properties.md`)
 - [ ] Texts of the settings page in a `.resx` (SimHub's translation editor), once they settle
-- [ ] Against the development server, without iRacing: properties in SimHub's list, lateness against a browser
+- [x] Against the development server, without iRacing (2026-11-12, SimHub 9.13.3): the plugin loads and connects,
+      four calls (safety car, own penalty, wave around, info) reached SimHub's properties with their tones, test calls
+      and test sound work; shown 11 to 14 ms after showAt, none late (the browser and the console client: 6 to 13 ms)
 - [ ] Dash Studio overlay and a PaceLaps layer for existing dashboards
 - [ ] LED effects profile, tested on a real wheel
 - [ ] VR: an overlay URL in OpenKneeboard first, then the plugin's overlay, with a VR driver
@@ -25,7 +26,7 @@ Exit: one beta driver uses it in a league race, and the VR question is answered.
 - [ ] Install guide for drivers
 
 ## Always
-- [ ] Keep a compatibility list of the SimHub versions the plugin was tested on (README).
+- [ ] Keep a compatibility list of the SimHub versions the plugin was tested on (README; so far 9.13.3).
 
 ## Findings and decisions
 - 2026-11-12: code namespaces are `PaceLaps.Plugin` and `PaceLaps.Plugin.Core` (the DLLs keep their names): inside a

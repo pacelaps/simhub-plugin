@@ -42,6 +42,10 @@ two files: `PaceLaps.SimHub.dll` and `PaceLaps.SimHub.Core.dll` (SimHub already 
 The message formats are in `contracts/`, a copy of the web service's. `scripts/sync-contracts.ps1` refreshes it from a
 web service checkout next to this one; a test fails while the copy is out of date.
 
+## Tested with
+
+SimHub 9.13.3 (2026-11-12).
+
 ## Layout
 
 ```
