@@ -257,6 +257,10 @@
                   "sound": {
                     "type": "string"
                   },
+                  "colour": {
+                    "$ref": "common.schema.json#/$defs/callColour",
+                    "description": "Optional. The message's own colour on every device; without it, the colour of its type."
+                  },
                   "type": {
                     "enum": [
                       "flag",

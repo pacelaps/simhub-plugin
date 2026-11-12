@@ -98,6 +98,28 @@ public sealed class PluginViewTests
     }
 
     [Fact]
+    public void A_leagues_own_colour_wins_over_the_type()
+    {
+        var o = Snapshots.Message("end", 3, T, "safety_car", true, text: "SAFETY CAR ENDING");
+        o["colour"] = "turquoise";
+
+        var v = PluginView.From(State(display: CallDisplay.Empty.Show(RaceMessage.From(o)!, T, 8)), T);
+
+        Assert.Equal(Palette.Turquoise, v.BannerColour);
+        Assert.Equal(Palette.Dark, v.BannerTextColour);
+        Assert.Equal(Palette.Turquoise, v.LedColour);
+    }
+
+    [Fact]
+    public void An_unknown_colour_from_a_newer_server_falls_back_to_the_type()
+    {
+        var o = Snapshots.Message("sc", 3, T, "safety_car", true);
+        o["colour"] = "magenta";
+
+        Assert.Equal(Palette.Yellow, PluginView.From(State(display: CallDisplay.Empty.Show(RaceMessage.From(o)!, T, 8)), T).BannerColour);
+    }
+
+    [Fact]
     public void A_class_wave_around_says_it_is_for_this_cars_class()
     {
         var o = Snapshots.Message("wa", 2, T, "wave_around", false);
@@ -175,7 +197,7 @@ public sealed class PluginViewTests
     [Theory]
     [InlineData("safety_car", "#FACC15")]
     [InlineData("wave_around", "#155DFC")]
-    [InlineData("info", "#71717A")]
+    [InlineData("info", "#52525B")]
     public void Each_test_call_has_its_colour(string kind, string colour) =>
         Assert.Equal(colour, PluginView.From(DriverState.Preview(kind, null, T), T).CallColour);
 

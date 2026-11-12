@@ -27,7 +27,7 @@ A one-off call (a blue flag, an info) shows over a lasting state (a safety car, 
 | `Call.Text` | text | The banner text |
 | `Call.Detail` | text | A second line, for example what a penalty means |
 | `Call.Kind` | text | `flag`, `safety_car`, `penalty`, `wave_around`, `info` or `system` |
-| `Call.Color` | text | Its colour, `#RRGGBB` (safety car yellow, penalty red, wave around blue, a flag call the race's flag colour) |
+| `Call.Color` | text | Its colour, `#RRGGBB`: the league's own colour if its procedure chose one, else by kind (safety car yellow, penalty red, wave around blue, a flag call the race's flag colour) |
 | `Call.TextColor` | text | A readable text colour on `Call.Color` |
 | `Call.AgeSeconds` | number | Seconds since it was shown |
 | `Call.New` | yes/no | Shown less than 5 seconds ago |

@@ -18,7 +18,8 @@
               "scope": "all"
             },
             "sticky": true,
-            "sound": "code60"
+            "sound": "code60",
+            "colour": "orange"
           }
         },
         {

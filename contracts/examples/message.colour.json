@@ -1,0 +1,18 @@
+{
+  "v": 1,
+  "id": "msg_95",
+  "cursor": "c_5640",
+  "type": "safety_car",
+  "text": "SAFETY CAR ENDING",
+  "affects": {
+    "scope": "all"
+  },
+  "visibleTo": {
+    "scope": "all"
+  },
+  "showAt": "2026-11-07T19:03:13.500Z",
+  "sticky": true,
+  "sound": "safety_car",
+  "createdBy": "procedure:league-safety-car",
+  "colour": "turquoise"
+}

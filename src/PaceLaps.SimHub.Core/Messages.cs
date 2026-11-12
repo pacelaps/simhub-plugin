@@ -28,8 +28,9 @@ namespace PaceLaps.Plugin.Core
     public sealed class RaceMessage
     {
         private RaceMessage(string id, string cursor, string type, string text, string? detail, string showAt, long showAtMs,
-            bool sticky, string? sound, IReadOnlyList<string> supersedes, Audience affects, Audience visibleTo)
+            bool sticky, string? sound, string? colour, IReadOnlyList<string> supersedes, Audience affects, Audience visibleTo)
         {
+            Colour = colour;
             Id = id;
             Cursor = cursor;
             Type = type;
@@ -59,6 +60,9 @@ namespace PaceLaps.Plugin.Core
         public bool Sticky { get; }
 
         public string? Sound { get; }
+
+        /// <summary>The league's own colour for this call (contract callColour), or null: the type's colour.</summary>
+        public string? Colour { get; }
         public IReadOnlyList<string> Supersedes { get; }
         public Audience Affects { get; }
         public Audience VisibleTo { get; }
@@ -81,7 +85,7 @@ namespace PaceLaps.Plugin.Core
                 return null;
             }
 
-            return new RaceMessage(id, cursor, type, text, o.Str("detail"), showAt!, showAtMs, o.Bool("sticky"), o.Str("sound"),
+            return new RaceMessage(id, cursor, type, text, o.Str("detail"), showAt!, showAtMs, o.Bool("sticky"), o.Str("sound"), o.Str("colour"),
                 o.Strings("supersedes"), Audience.From(o.Obj("affects")), Audience.From(o.Obj("visibleTo")));
         }
 

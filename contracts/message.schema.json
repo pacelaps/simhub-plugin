@@ -67,6 +67,10 @@
     "sound": {
       "type": "string"
     },
+    "colour": {
+      "$ref": "common.schema.json#/$defs/callColour",
+      "description": "Optional. The call's own colour from the league's procedure; devices without it show the type's colour (receivers ignore unknown fields)."
+    },
     "createdBy": {
       "type": "string",
       "description": "A steward (steward:<pseudonymous id>), a procedure (procedure:<id>) or the system."

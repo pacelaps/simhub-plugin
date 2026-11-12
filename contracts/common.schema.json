@@ -19,6 +19,20 @@
       "pattern": "^[0-9]{1,3}$",
       "description": "Car number as a string of one to three digits, because iRacing allows values like '07'. Car numbers are part of channel names (event.{id}.car.{number}), so nothing else is allowed."
     },
+    "callColour": {
+      "description": "A call's own colour, from race control's palette (spec-feedback 55): chosen in the procedure editor for a Show a message block. Devices show it instead of the colour of the message's type; each has a text colour checked for contrast. Absent: the type's colour.",
+      "enum": [
+        "yellow",
+        "orange",
+        "red",
+        "blue",
+        "turquoise",
+        "green",
+        "purple",
+        "white",
+        "grey"
+      ]
+    },
     "flagName": {
       "description": "Session flag state as normalised by the agent from iRacing's SessionFlags (spike 3, 2026-10-25). green is derived, not the sim's green bit (which is set only for a few seconds after a green flag): the agent reports green while the session state is Racing and no caution, caution_waving, red or checkered applies. caution is set for the whole full-course caution (the sim's caution or caution-waving bit); caution_waving is set in addition while the caution is waved. one_lap_to_green, green_held, white, checkered, red, yellow (local yellow), yellow_waving, debris, ten_to_go and five_to_go map one to one to the sim's bits. Confirmed in the sim so far: green, caution, caution_waving, one_lap_to_green, green_held.",
       "enum": [

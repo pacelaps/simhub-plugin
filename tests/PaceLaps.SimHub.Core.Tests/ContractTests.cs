@@ -56,6 +56,10 @@ public sealed class ContractTests
     }
 
     [Fact]
+    public void A_call_with_a_league_colour_is_read() =>
+        Assert.Equal("turquoise", RaceMessage.FromJson(Example("message.colour.json"))!.Colour);
+
+    [Fact]
     public void The_state_snapshot_example_is_read()
     {
         var snapshot = StateSnapshot.FromJson(Example("state_snapshot.json"))!;

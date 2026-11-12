@@ -11,9 +11,27 @@ namespace PaceLaps.Plugin.Core
         public const string Yellow = "#FACC15";
         public const string Red = "#DC2626";
         public const string Blue = "#155DFC";
-        public const string White = "#FAFAFA";
-        public const string Grey = "#71717A";
+        public const string White = "#F4F4F5";
+        public const string Grey = "#52525B";
+        public const string Orange = "#F97316";
+        public const string Turquoise = "#14B8A6";
+        public const string Purple = "#9333EA";
         public const string Dark = "#1C1917";
+
+        /// <summary>A league's call colour by its contract name (callColour), or null for an unknown one.</summary>
+        public static string? ForName(string? name) => name switch
+        {
+            "yellow" => Yellow,
+            "orange" => Orange,
+            "red" => Red,
+            "blue" => Blue,
+            "turquoise" => Turquoise,
+            "green" => Green,
+            "purple" => Purple,
+            "white" => White,
+            "grey" => Grey,
+            _ => null,
+        };
 
         /// <summary>A flag state's colour (race state flag.state); grey for anything else.</summary>
         public static string ForFlag(string? state) => state switch
@@ -28,7 +46,9 @@ namespace PaceLaps.Plugin.Core
 
         /// <summary>Readable text on <paramref name="background"/>.</summary>
         public static string TextOn(string background) =>
-            background == Yellow || background == Green || background == White ? Dark : "#FFFFFF";
+            background == Yellow || background == Green || background == White || background == Orange || background == Turquoise
+                ? Dark
+                : "#FFFFFF";
     }
 
     /// <summary>
@@ -256,15 +276,18 @@ namespace PaceLaps.Plugin.Core
             return v;
         }
 
-        /// <summary>A call's colour, as on the driver page: a flag call takes the race's flag colour.</summary>
-        public static string ColourOf(RaceMessage m, RaceState? race) => m.Type switch
+        /// <summary>
+        /// A call's colour, as on the driver page: the league's own colour if the call has one, else by its type (a flag
+        /// call takes the race's flag colour).
+        /// </summary>
+        public static string ColourOf(RaceMessage m, RaceState? race) => Palette.ForName(m.Colour) ?? (m.Type switch
         {
             "safety_car" => Palette.Yellow,
             "penalty" => Palette.Red,
             "wave_around" => Palette.Blue,
             "flag" => race == null ? Palette.White : Palette.ForFlag(race.FlagState),
             _ => Palette.Grey,
-        };
+        });
 
         /// <summary>
         /// Every SimHub property, by name (SimHub shows them as PaceLapsPlugin.&lt;name&gt;). The plugin binds exactly these;
