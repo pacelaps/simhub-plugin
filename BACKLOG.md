@@ -16,8 +16,9 @@ Exit: one beta driver uses it in a league race, and the VR question is answered.
       four calls (safety car, own penalty, wave around, info) reached SimHub's properties with their tones, test calls
       and test sound work; shown 11 to 14 ms after showAt, none late (the browser and the console client: 6 to 13 ms)
 - [ ] Dash Studio overlays: three designs built (2026-11-12: Card, the default; Solid; Strip; `tools/PaceLaps.Overlays`,
-      `Banner.*`/`Notice.*` properties); still to do: import each into SimHub and check it with the test calls, then
-      screenshots for the guides (all three are named in them)
+      `Banner.*`/`Notice.*` properties); checked in SimHub by the user (all three liked; two fixes: text fitted to
+      its box, flag calls neutral); league colours checked against test.pacelaps.com. Still to do: screenshots for
+      the guides (all three are named in them)
 - [ ] A PaceLaps layer for existing dashboards
 - [ ] LED effects profile, tested on a real wheel
 - [ ] VR: an overlay URL in OpenKneeboard first, then the plugin's overlay, with a VR driver
