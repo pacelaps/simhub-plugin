@@ -1,0 +1,16 @@
+bin/
+obj/
+*.user
+*.suo
+.vs/
+TestResults/
+publish/
+artifacts/
+
+# SimHub SDK assemblies are not redistributed
+lib/SimHub/
+
+*.log
+.idea/
+.vscode/*
+!.vscode/settings.json

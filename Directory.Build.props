@@ -1,0 +1,13 @@
+<Project>
+  <PropertyGroup>
+    <Nullable>enable</Nullable>
+    <LangVersion>latest</LangVersion>
+    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <!-- The next release's version. -->
+    <Version>0.1.0</Version>
+    <Product>PaceLaps SimHub plugin</Product>
+    <Company>PaceLaps</Company>
+    <Copyright>Christopher Monje, PaceLaps</Copyright>
+    <Authors>PaceLaps</Authors>
+  </PropertyGroup>
+</Project>

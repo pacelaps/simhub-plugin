@@ -1,0 +1,5 @@
+* text=auto
+*.cs text diff=csharp
+*.sln text eol=crlf
+# The contracts copy stays byte-identical to the web service's (ContractTests compares them).
+contracts/** text eol=lf

@@ -1,0 +1,14 @@
+<Project>
+  <!-- Central, pinned package versions. Change versions only here. -->
+  <PropertyGroup>
+    <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
+    <CentralPackageTransitivePinningEnabled>true</CentralPackageTransitivePinningEnabled>
+  </PropertyGroup>
+  <ItemGroup>
+    <!-- SimHub ships Newtonsoft.Json 13 (assembly version 13.0.0.0); the plugin uses SimHub's copy and ships none. -->
+    <PackageVersion Include="Newtonsoft.Json" Version="13.0.3" />
+    <PackageVersion Include="xunit.v3" Version="4.0.2" />
+    <!-- Test only: validates the plugin's reports against the shared JSON schemas. -->
+    <PackageVersion Include="JsonSchema.Net" Version="9.4.1" />
+  </ItemGroup>
+</Project>

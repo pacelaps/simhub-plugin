@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Protocol, clock offset, showAt scheduling, state: no SimHub reference, unit-tested on its own.
+       netstandard2.0 so SimHub's .NET Framework 4.8 loads it. -->
+  <PropertyGroup>
+    <TargetFramework>netstandard2.0</TargetFramework>
+    <RootNamespace>PaceLaps.SimHub.Core</RootNamespace>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="Newtonsoft.Json" />
+  </ItemGroup>
+  <ItemGroup>
+    <InternalsVisibleTo Include="PaceLaps.SimHub.Core.Tests" />
+  </ItemGroup>
+</Project>
