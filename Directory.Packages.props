@@ -10,5 +10,7 @@
     <PackageVersion Include="xunit.v3" Version="4.0.2" />
     <!-- Test only: validates the plugin's reports against the shared JSON schemas. -->
     <PackageVersion Include="JsonSchema.Net" Version="9.4.1" />
+    <!-- Test only: runs the overlays' formulas in the engine SimHub uses (SimHub 9.13 ships Jint 4.2). -->
+    <PackageVersion Include="Jint" Version="4.2.2" />
   </ItemGroup>
 </Project>

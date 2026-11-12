@@ -278,14 +278,16 @@ namespace PaceLaps.Plugin.Core
 
         /// <summary>
         /// A call's colour, as on the driver page: the league's own colour if the call has one, else by its type (a flag
-        /// call takes the race's flag colour).
+        /// call is neutral white).
         /// </summary>
         public static string ColourOf(RaceMessage m, RaceState? race) => Palette.ForName(m.Colour) ?? (m.Type switch
         {
             "safety_car" => Palette.Yellow,
             "penalty" => Palette.Red,
             "wave_around" => Palette.Blue,
-            "flag" => race == null ? Palette.White : Palette.ForFlag(race.FlagState),
+            // Neutral, as on the driver page: when a flag call comes up the race state may still show the flag before
+            // it (a green flag during the caution). A league gives a flag call its colour in the procedure.
+            "flag" => Palette.White,
             _ => Palette.Grey,
         });
 

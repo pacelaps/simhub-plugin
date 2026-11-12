@@ -89,3 +89,51 @@ public sealed class OverlayTests
     public void Every_property_the_overlays_use_exists() =>
         Assert.Subset(PluginView.Properties.Select(p => p.Name).ToHashSet(), Designs.All().SelectMany(Checks.PropertiesUsed).ToHashSet());
 }
+
+/// <summary>The overlays' formulas, run in Jint (SimHub's JavaScript engine) against plugin views.</summary>
+public sealed class OverlayFormulaTests
+{
+    private const long T = 1_800_000_000_000;
+
+    private static object? Run(string body, PluginView view)
+    {
+        var values = PluginView.Properties.ToDictionary(p => "PaceLapsPlugin." + p.Name, p => p.Value(view));
+        var engine = new Jint.Engine();
+        engine.SetValue("$prop", new Func<string, object?>(name => values.TryGetValue(name, out var v) ? v : null));
+        return engine.Evaluate("(function () {\n" + body + "\n})()").ToObject();
+    }
+
+    public static TheoryData<string, string> Formulas() =>
+        new(Designs.All().SelectMany(d => d.Items.SelectMany(i => i.Bindings.Select(b => ($"{d.Title}/{i.Name}.{b.Key}", b.Value)))));
+
+    [Theory]
+    [MemberData(nameof(Formulas))]
+    public void Every_formula_runs_with_a_call_and_without(string where, string body)
+    {
+        Assert.False(string.IsNullOrEmpty(where));
+        var js = Js.Helpers + body;
+        Run(js, PluginView.From(DriverState.Preview("penalty", "7", T), T));
+        Run(js, PluginView.From(DriverState.Preview("wave_around", "7", T), T));
+        Run(js, PluginView.NotSetUp);
+    }
+
+    [Theory]
+    [InlineData("DRIVE-THROUGH #7: TEST", 32, 326, 54)]
+    [InlineData("SAFETY CAR", 32, 326, 54)]
+    [InlineData("CODE 60: 60 KM/H, SINGLE FILE, NO OVERTAKING, PITS OPEN", 34, 336, 60)]
+    [InlineData("WAVE AROUND: GT4 CLASS", 16, 316, 44)]
+    public void Text_is_sized_to_fit_its_box_without_cutting_lines(string text, int big, int width, int height)
+    {
+        var size = Convert.ToDouble(Run(Js.Helpers + $"return fit('{text}', {big}, {width}, {height});", PluginView.NotSetUp));
+
+        var perLine = Math.Max(1, Math.Floor(width / (size * 0.72)));
+        var lines = Math.Ceiling(text.Length / perLine);
+        Assert.InRange(size, 11, big);
+        Assert.True(lines <= 2 || size == 11, $"{lines} lines at {size}");
+        Assert.True(lines * size * 1.35 <= height || size == 11, $"{lines} lines of {size} need {lines * size * 1.35} of {height}");
+    }
+
+    [Fact]
+    public void A_short_call_keeps_the_big_size() =>
+        Assert.Equal(32d, Convert.ToDouble(Run(Js.Helpers + "return fit('SAFETY CAR', 32, 326, 54);", PluginView.NotSetUp)));
+}

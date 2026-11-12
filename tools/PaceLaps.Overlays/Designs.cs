@@ -12,7 +12,9 @@ internal static class Js
         + "function main(f) { return p('Banner.Active') ? p('Banner.' + f) : p('Notice.' + f); }\n"
         + "function both() { return p('Banner.Active') && p('Notice.Active'); }\n"
         + "function upper(t) { return (t || '').toUpperCase(); }\n"
-        + "function fit(t, big) { var n = (t || '').length; return n <= 14 ? big : n <= 22 ? big * 0.82 : n <= 32 ? big * 0.66 : big * 0.54; }\n"
+        // The largest size up to big at which the text fits w x h in at most two lines (Inter ExtraBold capitals are
+        // about 0.72 em wide; a line takes 1.35 em, so nothing is cut at the top or bottom).
+        + "function fit(t, big, w, h) { var n = Math.max(1, (t || '').length); for (var s = big; s > 11; s--) { var per = Math.max(1, Math.floor(w / (s * 0.72))); var lines = Math.ceil(n / per); if (lines <= 2 && lines * s * 1.35 <= h) return s; } return 11; }\n"
         + "function short(t, max) { t = t || ''; return t.length <= max ? t : t.substring(0, max - 1) + '…'; }\n"
         + "function chip(prefix) { return p(prefix + '.Mine') ? 'YOU' : (prefix == 'Notice' && p('Notice.MyClass')) ? 'YOUR CLASS' : ''; }\n"
         + "function mainChip() { return p('Banner.Active') ? chip('Banner') : chip('Notice'); }\n"
@@ -41,39 +43,39 @@ internal static class Designs
     public static Dash Card()
     {
         var d = new Dash("PaceLaps Card",
-            "PaceLaps race control: the current call on dark glass with a colour bar. Needs the PaceLaps plugin.", 460, 200);
+            "PaceLaps race control: the current call on dark glass with a colour bar. Needs the PaceLaps plugin.", 460, 204);
 
-        d.Add(new Rect("Card", 0, 0, 460, 112) { Background = Glass, BorderColor = Hairline, BorderWidth = 1, Radius = 10 })
+        d.Add(new Rect("Card", 0, 0, 460, 116) { Background = Glass, BorderColor = Hairline, BorderWidth = 1, Radius = 10 })
             .Bind("Visible", Js.MainVisible);
         d.Add(new Rect("Mark", 18, 12, 9, 9) { Background = Brand, SkewX = -20 }).Bind("Visible", Js.MainVisible);
         d.Add(new Label("Header", 34, 6, 220, 22) { Size = 11, Color = Subtle })
             .Bind("Visible", Js.MainVisible).Bind("Text", "return 'RACE CONTROL';");
         d.Add(new Label("Lap", 256, 6, 188, 22) { Size = 11, Color = Faint, Align = 2 })
             .Bind("Visible", Js.MainVisible).Bind("Text", "return lap();");
-        d.Add(new Rect("Bar", 16, 34, 6, 62) { Radius = 3 })
+        d.Add(new Rect("Bar", 16, 34, 6, 70) { Radius = 3 })
             .Bind("Visible", Js.MainVisible).Bind("BackgroundColor", "return main('Color');");
-        d.Add(new Label("Text", 34, 30, 326, 48) { Weight = "ExtraBold", Italic = true, Size = 32, Wrap = true })
+        d.Add(new Label("Text", 34, 28, 326, 54) { Weight = "ExtraBold", Italic = true, Size = 32, Wrap = true })
             .Bind("Visible", Js.MainVisible)
             .Bind("Text", "return upper(main('Text'));")
-            .Bind("FontSize", "return fit(main('Text'), 32);")
-            .Bind("Top", "return main('Detail') ? 30 : 40;");
+            .Bind("FontSize", "return fit(main('Text'), 32, 326, 54);")
+            .Bind("Top", "return main('Detail') ? 28 : 42;");
         d.Add(new Label("Chip", 360, 30, 86, 30) { Size = 11, Color = Muted, Align = 2 })
             .Bind("Visible", Js.MainVisible).Bind("Text", "return mainChip();");
-        d.Add(new Label("Detail", 34, 74, 412, 32) { Weight = "Medium", Size = 13, Color = Muted, Wrap = true })
+        d.Add(new Label("Detail", 34, 80, 412, 34) { Weight = "Medium", Size = 12, Color = Muted, Wrap = true })
             .Bind("Visible", Js.MainVisible).Bind("Text", "return short(main('Detail'), 110);");
 
-        d.Add(new Rect("NoticeCard", 0, 120, 460, 44) { Background = Glass, BorderColor = Hairline, BorderWidth = 1, Radius = 10 })
+        d.Add(new Rect("NoticeCard", 0, 124, 460, 44) { Background = Glass, BorderColor = Hairline, BorderWidth = 1, Radius = 10 })
             .Bind("Visible", Js.NoticeVisible);
-        d.Add(new Rect("NoticeBar", 16, 131, 6, 22) { Radius = 3 })
+        d.Add(new Rect("NoticeBar", 16, 135, 6, 22) { Radius = 3 })
             .Bind("Visible", Js.NoticeVisible).Bind("BackgroundColor", "return p('Notice.Color');");
-        d.Add(new Label("NoticeText", 34, 120, 316, 44) { Size = 16 })
+        d.Add(new Label("NoticeText", 34, 124, 316, 44) { Size = 16, Wrap = true })
             .Bind("Visible", Js.NoticeVisible)
             .Bind("Text", "return upper(p('Notice.Text'));")
-            .Bind("FontSize", "return fit(p('Notice.Text'), 16);");
-        d.Add(new Label("NoticeChip", 350, 120, 96, 44) { Size = 11, Color = Muted, Align = 2 })
+            .Bind("FontSize", "return fit(p('Notice.Text'), 16, 316, 44);");
+        d.Add(new Label("NoticeChip", 350, 124, 96, 44) { Size = 11, Color = Muted, Align = 2 })
             .Bind("Visible", Js.NoticeVisible).Bind("Text", "return chip('Notice');");
 
-        Offline(d, 0, 172);
+        Offline(d, 0, 176);
         return d;
     }
 
@@ -87,15 +89,15 @@ internal static class Designs
             .Bind("Visible", Js.MainVisible).Bind("BackgroundColor", "return main('Color');");
         d.Add(new Rect("Ring", 0, 0, 460, 112) { BorderColor = White, BorderWidth = 3, Radius = 10 })
             .Bind("Visible", "return on() && mainChip() != '';");
-        d.Add(new Label("Text", 20, 14, 336, 56) { Weight = "ExtraBold", Italic = true, Size = 34, Wrap = true })
+        d.Add(new Label("Text", 20, 10, 336, 60) { Weight = "ExtraBold", Italic = true, Size = 34, Wrap = true })
             .Bind("Visible", Js.MainVisible)
             .Bind("Text", "return upper(main('Text'));")
             .Bind("TextColor", "return main('TextColor');")
-            .Bind("FontSize", "return fit(main('Text'), 34);")
-            .Bind("Top", "return main('Detail') ? 14 : 28;");
+            .Bind("FontSize", "return fit(main('Text'), 34, 336, 60);")
+            .Bind("Top", "return main('Detail') ? 10 : 26;");
         d.Add(new Label("Chip", 356, 14, 88, 30) { Size = 12, Align = 2 })
             .Bind("Visible", Js.MainVisible).Bind("Text", "return mainChip();").Bind("TextColor", "return main('TextColor');");
-        d.Add(new Label("Detail", 20, 68, 420, 38) { Weight = "Medium", Size = 13, Wrap = true })
+        d.Add(new Label("Detail", 20, 72, 420, 34) { Weight = "Medium", Size = 12, Wrap = true })
             .Bind("Visible", Js.MainVisible)
             .Bind("Text", "return short(main('Detail'), 110);")
             .Bind("TextColor", "return main('TextColor');");
@@ -104,11 +106,11 @@ internal static class Designs
             .Bind("Visible", Js.NoticeVisible).Bind("BackgroundColor", "return p('Notice.Color');");
         d.Add(new Rect("NoticeRing", 0, 120, 460, 44) { BorderColor = White, BorderWidth = 3, Radius = 10 })
             .Bind("Visible", "return both() && chip('Notice') != '';");
-        d.Add(new Label("NoticeText", 20, 120, 330, 44) { Size = 16 })
+        d.Add(new Label("NoticeText", 20, 120, 330, 44) { Size = 16, Wrap = true })
             .Bind("Visible", Js.NoticeVisible)
             .Bind("Text", "return upper(p('Notice.Text'));")
             .Bind("TextColor", "return p('Notice.TextColor');")
-            .Bind("FontSize", "return fit(p('Notice.Text'), 16);");
+            .Bind("FontSize", "return fit(p('Notice.Text'), 16, 330, 44);");
         d.Add(new Label("NoticeChip", 350, 120, 94, 44) { Size = 11, Align = 2 })
             .Bind("Visible", Js.NoticeVisible).Bind("Text", "return chip('Notice');").Bind("TextColor", "return p('Notice.TextColor');");
 
@@ -130,7 +132,7 @@ internal static class Designs
             .Bind("Visible", Js.MainVisible)
             .Bind("Text", "return upper(main('Text'));")
             .Bind("TextColor", "return main('TextColor');")
-            .Bind("FontSize", "return fit(main('Text'), 22);");
+            .Bind("FontSize", "return fit(main('Text'), 22, 278, 56);");
         d.Add(new Label("Detail", 314, 0, 372, 56) { Weight = "Medium", Size = 13, Color = Muted, Wrap = true })
             .Bind("Visible", Js.MainVisible)
             .Bind("Text", "var c = mainChip(); return (c ? c + ' · ' : '') + short(main('Detail'), 90);");
@@ -140,7 +142,7 @@ internal static class Designs
             .Bind("Visible", Js.NoticeVisible)
             .Bind("Text", "var c = chip('Notice'); return upper(p('Notice.Text')) + (c ? ' · ' + c : '');")
             .Bind("TextColor", "return p('Notice.TextColor');")
-            .Bind("FontSize", "return fit(p('Notice.Text'), 14);");
+            .Bind("FontSize", "return fit(p('Notice.Text'), 14, 236, 56);");
 
         Offline(d, 0, 60);
         return d;

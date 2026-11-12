@@ -140,12 +140,13 @@ public sealed class PluginViewTests
     }
 
     [Fact]
-    public void A_flag_call_takes_the_races_flag_colour()
+    public void A_flag_call_is_neutral_unless_its_league_coloured_it()
     {
         var display = CallDisplay.Empty.Show(M("green", "flag", false), T, 8);
 
-        Assert.Equal(Palette.Green, PluginView.From(State(display: display, race: Race("green")), T).CallColour);
-        Assert.Equal(Palette.White, PluginView.From(State(display: display), T).CallColour);
+        // The race state may still say caution when the green flag call comes up.
+        Assert.Equal(Palette.White, PluginView.From(State(display: display, race: Race("yellow")), T).CallColour);
+        Assert.Equal(Palette.Green, PluginView.From(DriverState.Preview("flag", "12", T), T).CallColour);
     }
 
     [Fact]
@@ -198,6 +199,7 @@ public sealed class PluginViewTests
     [InlineData("safety_car", "#FACC15")]
     [InlineData("wave_around", "#155DFC")]
     [InlineData("info", "#52525B")]
+    [InlineData("flag", "#22C55E")]
     public void Each_test_call_has_its_colour(string kind, string colour) =>
         Assert.Equal(colour, PluginView.From(DriverState.Preview(kind, null, T), T).CallColour);
 

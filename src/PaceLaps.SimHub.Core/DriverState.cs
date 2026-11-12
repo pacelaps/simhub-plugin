@@ -96,6 +96,12 @@ namespace PaceLaps.Plugin.Core
                 ["sticky"] = sticky,
                 ["sound"] = kind == "wave_around" ? "wave" : kind,
             };
+            if (kind == "flag")
+            {
+                // As a league's procedure would give its green flag (a flag call alone is neutral).
+                o["colour"] = "green";
+            }
+
             if (kind == "penalty")
             {
                 o["detail"] = "A test: nothing to serve.";
