@@ -29,7 +29,9 @@
           "enum": ["drive_through", "stop_and_go", "eol", "dq", "remove", "time", null]
         },
         "action_seconds": { "type": "integer", "minimum": 1, "maximum": 600, "description": "Stop and go: 1 to 300 seconds in the pit box. Time: 1 to 600 seconds added. Only with those two actions." },
-        "explanation": { "type": "string", "minLength": 1, "maxLength": 300, "description": "The message for drivers, shown under the penalty's banner." }
+        "explanation": { "type": "string", "minLength": 1, "maxLength": 300, "description": "The message for drivers, shown under the penalty's banner." },
+        "points": { "type": "integer", "minimum": 0, "maximum": 20, "description": "Optional penalty points the penalty adds to the driver's total (spec-feedback 49). Absent: none." },
+        "resets_points": { "type": "boolean", "description": "Optional: the penalty starts the driver's points total again (for example the drive-through a league gives at its limit); its own points count from there. Absent: false." }
       },
       "allOf": [
         {

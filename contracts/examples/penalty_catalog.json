@@ -13,19 +13,22 @@
       "code": "SP2",
       "name": "2 penalty points",
       "action": null,
-      "explanation": "2 penalty points. At 10 points you get a drive-through (SPDT) and your points go back to 0. Points carry over to the next race."
+      "explanation": "2 penalty points. At 10 points you get a drive-through (SPDT) and your points go back to 0. Points carry over to the next race.",
+      "points": 2
     },
     {
       "code": "SP3",
       "name": "3 penalty points",
       "action": null,
-      "explanation": "3 penalty points. At 10 points you get a drive-through (SPDT) and your points go back to 0. Points carry over to the next race."
+      "explanation": "3 penalty points. At 10 points you get a drive-through (SPDT) and your points go back to 0. Points carry over to the next race.",
+      "points": 3
     },
     {
       "code": "SP5",
       "name": "5 penalty points",
       "action": null,
-      "explanation": "5 penalty points. At 10 points you get a drive-through (SPDT) and your points go back to 0. Points carry over to the next race."
+      "explanation": "5 penalty points. At 10 points you get a drive-through (SPDT) and your points go back to 0. Points carry over to the next race.",
+      "points": 5
     },
     {
       "code": "S5",
@@ -63,6 +66,7 @@
     },
     {
       "code": "SPDT",
+      "resets_points": true,
       "name": "Cumulative drive-through (10 points)",
       "action": "drive_through",
       "explanation": "You reached 10 penalty points: drive through the pit lane at the pit speed limit. Your points go back to 0. iRacing shows the black flag until you have served it."

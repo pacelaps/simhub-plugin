@@ -1,0 +1,13 @@
+{
+  "v": 1,
+  "kind": "penalty_catalog",
+  "entries": [
+    {
+      "code": "SP25",
+      "name": "25 points",
+      "action": null,
+      "explanation": "Too many.",
+      "points": 25
+    }
+  ]
+}

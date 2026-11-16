@@ -119,6 +119,16 @@
             "$ref": "message.schema.json"
           }
         },
+        "points": {
+          "description": "Optional: the driver's penalty points (spec-feedback 49), only for a car's device and only when the league gives points: the total since the league's start date and its limit (null: none). Never another driver's.",
+          "type": "object",
+          "required": ["total", "limit"],
+          "additionalProperties": false,
+          "properties": {
+            "total": { "type": "integer", "minimum": 0 },
+            "limit": { "type": ["integer", "null"], "minimum": 1 }
+          }
+        },
         "target": {
           "oneOf": [
             {
@@ -137,7 +147,20 @@
             }
           ]
         },
-        "race": {
+        "driver": {
+        "description": "Optional (spec-feedback 56): the driver this screen belongs to, by iRacing customer id. Such a screen follows its driver to whichever league's session they are in; the snapshot's channels change with it. Null for a screen joined with league and car number, and for a spectator.",
+        "oneOf": [
+          { "type": "null" },
+          {
+            "type": "object",
+            "required": ["custId"],
+            "properties": {
+              "custId": { "type": "integer", "minimum": 1 }
+            }
+          }
+        ]
+      },
+      "race": {
           "description": "The race state for the first draw (raceState); null without telemetry. Optional: older servers send none.",
           "oneOf": [
             {
