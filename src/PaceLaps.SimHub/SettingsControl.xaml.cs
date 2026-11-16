@@ -36,7 +36,8 @@ namespace PaceLaps.Plugin
         {
             var site = Host.Site;
             var car = s.Device.Car == null ? "" : ", car #" + s.Device.Car;
-            var session = s.SessionName == null ? "no session open" : s.SessionName;
+            var session = s.Device.League == null && !s.Device.Spectator ? "waiting for your first league session"
+                : s.SessionName == null ? "no session open" : s.SessionName;
             (StatusText.Text, DetailText.Text) = s.Status switch
             {
                 ConnectionStatus.NotSetUp => ("Not connected", "Paste an overlay URL to get race control's calls."),

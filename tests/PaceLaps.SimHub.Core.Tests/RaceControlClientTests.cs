@@ -180,6 +180,29 @@ public sealed class RaceControlClientTests : IDisposable
     }
 
     [Fact]
+    public async Task A_waiting_screen_asks_for_its_state_until_a_session_places_it()
+    {
+        // A driver's screen joined with a customer id no league has seen yet: no league, no channels.
+        _api.StateJson = _ => Snapshots.State(_api.ServerNowMs, 0, session: null, league: null);
+        await _client.Start();
+        Assert.Null(_client.State.Device.League);
+        var asked = _api.StateCursors.Count;
+
+        _time.Advance(RaceControlClient.WaitingMs);
+        Assert.Equal(asked + 1, _api.StateCursors.Count);
+
+        // The first session that shows the driver places the screen: its league, session and channels.
+        _api.StateJson = _ => Snapshots.State(_api.ServerNowMs, 11);
+        _time.Advance(RaceControlClient.WaitingMs);
+
+        Assert.Equal(7, _client.State.Device.League);
+        Assert.Equal(41, _client.State.SessionId);
+        var placed = _api.StateCursors.Count;
+        _time.Advance(RaceControlClient.WaitingMs * 3);
+        Assert.Equal(placed, _api.StateCursors.Count);
+    }
+
+    [Fact]
     public async Task A_url_that_no_longer_works_stops_everything()
     {
         _api.StateFails = FakeApi.SignedOut();

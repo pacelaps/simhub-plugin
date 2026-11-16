@@ -231,7 +231,7 @@ internal static class Snapshots
     }
 
     public static string State(long serverNowMs, int seq = 10, JObject[]? banners = null, JObject[]? recent = null, int? session = Session,
-        JObject? race = null, JObject? target = null) =>
+        JObject? race = null, JObject? target = null, int? league = 7) =>
         new JObject
         {
             ["v"] = 1,
@@ -247,7 +247,7 @@ internal static class Snapshots
             ["channels"] = session == null
                 ? new JObject { ["banner"] = new JArray(), ["audit"] = new JArray() }
                 : new JObject { ["banner"] = new JArray(BannerChannels), ["audit"] = new JArray(), ["live"] = new JArray(LiveChannel) },
-            ["device"] = new JObject { ["league"] = 7, ["car"] = Car, ["classId"] = ClassId, ["spectator"] = false },
+            ["device"] = new JObject { ["league"] = league, ["car"] = league == null ? null : Car, ["classId"] = ClassId, ["spectator"] = false },
             ["oneOffSeconds"] = 8,
         }.ToString();
 }

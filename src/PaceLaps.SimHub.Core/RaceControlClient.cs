@@ -21,6 +21,12 @@ namespace PaceLaps.Plugin.Core
         public const long HeartbeatMs = 60_000;
 
         public const long RetryMs = 5_000;
+
+        /// <summary>
+        /// How often a driver's screen that waits for its first league session asks for its state: it has no league
+        /// channel to hear about it (the web service's join flow, spec-feedback 56).
+        /// </summary>
+        public const long WaitingMs = 20_000;
         public const long ClockBurstGapMs = 20;
 
         private readonly IDeviceApi _api;
@@ -195,6 +201,10 @@ namespace PaceLaps.Plugin.Core
                 }
 
                 Apply(snapshot, cursor);
+                if (snapshot.Device.League == null && !snapshot.Device.Spectator)
+                {
+                    _timers.After(WaitingMs, () => Run(() => Load(null)));
+                }
             }
             finally
             {
